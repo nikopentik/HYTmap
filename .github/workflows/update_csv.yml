@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '0 * * * *' # Ajoitetaan kerran tunnissa
+    - cron: '*/5 * * * *' # Ajoitetaan 5 minuutin välein
 
 jobs:
   update-csv:
@@ -30,11 +30,12 @@ jobs:
 
     - name: Commit and push changes
       env:
-        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+        GH_PAT: ${{ secrets.GH_PAT }}
       run: |
         git config --global user.name 'github-actions'
         git config --global user.email 'github-actions@github.com'
+        git remote set-url origin https://$GH_PAT@github.com/nikopentik/HYTmap.git
         git add data.csv
         git commit -m 'Update CSV file'
-        git push
+        git push origin main
 
