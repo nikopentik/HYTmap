@@ -34,12 +34,15 @@ try:
 except FileNotFoundError:
     st.write("CSV file not found. A new file will be created when you add a marker.")
     data_df = pd.DataFrame(columns=["target_group", "lat", "lng"])
+    data_df.to_csv("data.csv", index=False)
 except pd.errors.EmptyDataError:
     st.write("CSV file is empty. Add a marker to start logging data.")
     data_df = pd.DataFrame(columns=["target_group", "lat", "lng"])
+    data_df.to_csv("data.csv", index=False)
 except pd.errors.ParserError:
     st.write("Error reading CSV file. Creating a new file.")
     data_df = pd.DataFrame(columns=["target_group", "lat", "lng"])
+    data_df.to_csv("data.csv", index=False)
 
 # Näytä kartta Streamlitissa
 map = st_folium(m, height=600, width=1200)
