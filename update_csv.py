@@ -9,9 +9,10 @@ except FileNotFoundError:
 # Tee muutoksia data_df:hen tarvittavalla tavalla
 # Esimerkiksi lisää uusi rivi
 # Huomaa, että tässä esimerkissä käytämme kiinteitä arvoja
-new_data = {"target_group": 0, "lat": 60.5, "lng": 25.5}  # Korvaa tämä todellisilla tiedoilla
-data_df = data_df.append(new_data, ignore_index=True)
+new_data = pd.DataFrame([{"target_group": 0, "lat": 60.5, "lng": 25.5}])  # Korvaa tämä todellisilla tiedoilla
+data_df = pd.concat([data_df, new_data], ignore_index=True)
 
 # Kirjoita päivitetty CSV-tiedosto takaisin
 data_df.to_csv("data.csv", index=False)
+
 
