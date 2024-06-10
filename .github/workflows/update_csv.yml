@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '*/15 * * * *' # Ajoitetaan 15 minuutin välein
+    - cron: '*/5 * * * *' # Ajoitetaan 5 minuutin välein
 
 jobs:
   update-csv:
