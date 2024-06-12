@@ -8,9 +8,9 @@ except FileNotFoundError:
 
 # Lisää uusi data
 new_data = {
-    'target_group': [1],
-    'lat': [60.169158],
-    'lng': [24.940228]
+    'target_group': [1],  # Vaihda tarvittaessa oikeisiin arvoihin
+    'lat': [60.169158],   # Vaihda tarvittaessa oikeisiin arvoihin
+    'lng': [24.940228]    # Vaihda tarvittaessa oikeisiin arvoihin
 }
 
 new_data_df = pd.DataFrame(new_data)
