@@ -70,9 +70,6 @@ if map.get("last_clicked"):
     # Lisää uusi markkeri kartalle
     fl.Marker([la, lo], popup="New Point").add_to(m)
 
-# Päivitä kartta uusilla markkereilla
-map = st_folium(m, height=600, width=1200)
-
 # Lopeta-painike
 if st.button('Stop and exit'):
     st.write('Stopping... You can close the window')
