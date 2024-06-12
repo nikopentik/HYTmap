@@ -24,34 +24,29 @@ st.subheader('Map: Zoom, pan and click to select locations')
 m = fl.Map(location=[60.5, 25.5], zoom_start=7)
 m.add_child(fl.ClickForMarker())
 
-# Näytä kartta Streamlitissa
-map = st_folium(m, height=600, width=1200)
+# Näytä kartta Streamlitissa ja kerää klikkauksen tiedot
+map_data = st_folium(m, height=600, width=1200)
 
 # Määrittele get_pos-funktio
 def get_pos(lat, lng):
     return lat, lng
 
 # Hanki koordinaatit karttaklikkauksesta
-data = None
-if map.get("last_clicked"):
-    data = get_pos(map["last_clicked"]["lat"], map["last_clicked"]["lng"])
-    la, lo = data
-
+if map_data.get("last_clicked"):
+    la, lo = get_pos(map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"])
+    
     # Lisää uudet koordinaatit CSV-tiedostoon
     with open("data.csv", "a", newline='') as f:
-        if data is not None:
-            st.write(data)  # Kirjoittaa sovellukseen
-            print(la, lo, sep=',')  # Kirjoittaa terminaaliin
-            writer = csv.DictWriter(f, fieldnames=["target_group", "lat", "lng"])
-            if f.tell() == 0:  # Tarkistaa, onko tiedosto tyhjä, ja lisää otsikot
-                writer.writeheader()
-            writer.writerow({"target_group": tg, "lat": la, "lng": lo})
-
+        writer = csv.DictWriter(f, fieldnames=["target_group", "lat", "lng"])
+        if f.tell() == 0:  # Tarkistaa, onko tiedosto tyhjä, ja lisää otsikot
+            writer.writeheader()
+        writer.writerow({"target_group": tg, "lat": la, "lng": lo})
+    
     # Lisää uusi markkeri kartalle ja näytä koordinaatit popupissa
     fl.Marker([la, lo], popup=f"Coordinates: ({la}, {lo})").add_to(m)
 
 # Näytä päivitetty kartta
-map = st_folium(m, height=600, width=1200)
+st_folium(m, height=600, width=1200)
 
 # Lopeta-painike
 if st.button('Stop and exit'):
