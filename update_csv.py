@@ -1,18 +1,21 @@
 import pandas as pd
 
-# Lue nykyinen CSV-tiedosto
+# Lue nykyinen data
 try:
-    data_df = pd.read_csv("data.csv")
+    data_df = pd.read_csv('data.csv')
 except FileNotFoundError:
     data_df = pd.DataFrame(columns=["target_group", "lat", "lng"])
 
-# Tee muutoksia data_df:hen tarvittavalla tavalla
-# Esimerkiksi lisää uusi rivi
-# Huomaa, että tässä esimerkissä käytämme kiinteitä arvoja
-new_data = pd.DataFrame([{"target_group": 0, "lat": 60.5, "lng": 25.5}])  # Korvaa tämä todellisilla tiedoilla
-data_df = pd.concat([data_df, new_data], ignore_index=True)
+# Lisää uusi data
+new_data = {
+    'target_group': [1],
+    'lat': [60.169158],
+    'lng': [24.940228]
+}
 
-# Kirjoita päivitetty CSV-tiedosto takaisin
-data_df.to_csv("data.csv", index=False)
+new_data_df = pd.DataFrame(new_data)
 
+# Päivitä data.csv
+data_df = pd.concat([data_df, new_data_df], ignore_index=True)
+data_df.to_csv('data.csv', index=False)
 
