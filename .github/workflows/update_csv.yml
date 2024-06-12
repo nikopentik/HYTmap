@@ -34,7 +34,7 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
         chmod 600 ~/.ssh/id_ed25519
         ssh-keyscan github.com >> ~/.ssh/known_hosts
-        ssh -T git@github.com
+        ssh -T git@github.com || exit 255
 
     - name: Commit and push changes
       run: |
