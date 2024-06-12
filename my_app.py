@@ -4,7 +4,6 @@ import folium as fl
 from streamlit_folium import st_folium
 import streamlit as st
 import csv
-import pandas as pd
 
 # Otsikko
 st.title('Workshop 1C – Mapping the HRS locations')
@@ -24,25 +23,6 @@ st.subheader('Map: Zoom, pan and click to select locations')
 # Luo folium-kartta
 m = fl.Map(location=[60.5, 25.5], zoom_start=7)
 m.add_child(fl.ClickForMarker())
-
-# Lisää olemassa olevat markkerit CSV-tiedostosta
-try:
-    data_df = pd.read_csv("data.csv")
-    if not data_df.empty and 'lat' in data_df.columns and 'lng' in data_df.columns:
-        for idx, row in data_df.iterrows():
-            fl.Marker([row['lat'], row['lng']], popup=f"Point {idx+1}").add_to(m)
-except FileNotFoundError:
-    st.write("CSV file not found. A new file will be created when you add a marker.")
-    data_df = pd.DataFrame(columns=["target_group", "lat", "lng"])
-    data_df.to_csv("data.csv", index=False)
-except pd.errors.EmptyDataError:
-    st.write("CSV file is empty. Add a marker to start logging data.")
-    data_df = pd.DataFrame(columns=["target_group", "lat", "lng"])
-    data_df.to_csv("data.csv", index=False)
-except pd.errors.ParserError:
-    st.write("Error reading CSV file. Creating a new file.")
-    data_df = pd.DataFrame(columns=["target_group", "lat", "lng"])
-    data_df.to_csv("data.csv", index=False)
 
 # Näytä kartta Streamlitissa
 map = st_folium(m, height=600, width=1200)
@@ -67,8 +47,11 @@ if map.get("last_clicked"):
                 writer.writeheader()
             writer.writerow({"target_group": tg, "lat": la, "lng": lo})
 
-    # Lisää uusi markkeri kartalle
-    fl.Marker([la, lo], popup="New Point").add_to(m)
+    # Lisää uusi markkeri kartalle ja näytä koordinaatit popupissa
+    fl.Marker([la, lo], popup=f"Coordinates: ({la}, {lo})").add_to(m)
+
+# Näytä päivitetty kartta
+map = st_folium(m, height=600, width=1200)
 
 # Lopeta-painike
 if st.button('Stop and exit'):
