@@ -25,19 +25,19 @@ data = None
 if map.get("last_clicked"):
     data = get_pos(map["last_clicked"]["lat"], map["last_clicked"]["lng"])
     la, lo = data
-    df_new = pd.DataFrame({"type": [group], "lat": [la], "lng": [lo]})  # Include group as type
+    df_new = pd.DataFrame({"type": [tg], "lat": [la], "lng": [lo]})  # Include group number as type
     if "df" not in st.session_state:
         st.session_state.df = pd.DataFrame(columns=['type', 'lat', 'lng'])
     st.session_state.df = pd.concat([st.session_state.df, df_new], ignore_index=True)
 
 if data is not None:
     st.write(st.session_state.df.drop_duplicates()) # Writes to the app
-    print(group, la, lo, sep = ',') # Writes to terminal
+    print(tg, la, lo, sep = ',') # Writes to terminal
 
     # Save to CSV
     with open("data.csv", "a", newline='') as f:
         writer = csv.DictWriter(f, fieldnames=["type", "lat", "lng"])
         if f.tell() == 0:  # Tarkistaa, onko tiedosto tyhjä, ja lisää otsikot
             writer.writeheader()
-        writer.writerow({"type": group, "lat": la, "lng": lo})
+        writer.writerow({"type": tg, "lat": la, "lng": lo})
 
