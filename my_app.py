@@ -10,16 +10,16 @@ def get_pos(lat, lng):
 st.title('Workshop 1C – Mapping the HRS locations')
 
 groups = {
-    1: 'Hauling and logistic companies, public transportation operators, vehicle manufacturers',
-    2: 'HRS operators, infrastructure designers and owners, public authorities'
+    0: 'Hauling and logistic companies, public transportation operators, vehicle manufacturers',
+    1: 'HRS operators, infrastructure designers and owners, public authorities'
 }
 group_labels = list(groups.values())
 group = st.radio("First select your target group", group_labels)
 
 try:
-    tg = group_labels.index(group) + 1
+    tg = group_labels.index(group)
 except:
-    tg = 1
+    tg = 0
 
 st.subheader('Map: Zoom, pan and click to select locations')
 
