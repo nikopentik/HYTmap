@@ -22,7 +22,7 @@ with col2:
     st.subheader('Map: Zoom, pan and click to select locations')
     m = fl.Map([62.5, 25.5], zoom_start=7)
     m.add_child(fl.ClickForMarker())
-    map = st_folium(m, height=1000, width=1000)
+    map = st_folium(m, height=800, width=1000)
 
 data = None
 if map.get("last_clicked"):
