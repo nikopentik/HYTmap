@@ -2,30 +2,27 @@ import pandas as pd
 import folium as fl
 from streamlit_folium import st_folium
 import streamlit as st
-import csv
+#import csv
 
 def get_pos(lat, lng):
     return lat, lng
 
-st.title('Workshop 1C – Mapping the HRS locations')
-
-groups = {
-    0: 'Hauling and logistic companies, public transportation operators, vehicle manufacturers',
-    1: 'HRS operators, infrastructure designers and owners, public authorities'
-}
-group_labels = list(groups.values())
-group = st.radio("First select your target group", group_labels)
-
+st.set_page_config(layout="wide")
+col1, col2 = st.columns([2,8])
+with col1:
+    st.title('Mapping the HRS locations')
+    groups = ('Hauling and logistic companies, public transportation operators, vehicle manufacturers','HRS operators, infrastructure designers and owners, public authorities, research & academia')
+    group = st.radio("First select your target group", groups)
 try:
-    tg = group_labels.index(group)
+    tg = groups.index(group)
 except:
     tg = 0
 
-st.subheader('Map: Zoom, pan and click to select locations')
-
-m = fl.Map([60.5, 25.5], zoom_start=7)
-m.add_child(fl.ClickForMarker())
-map = st_folium(m, height=600, width=1200)
+with col2:
+    st.subheader('Map: Zoom, pan and click to select locations')
+    m = fl.Map([62.5, 25.5], zoom_start=7)
+    m.add_child(fl.ClickForMarker())
+    map = st_folium(m, height=1000, width=1000)
 
 data = None
 if map.get("last_clicked"):
@@ -37,13 +34,6 @@ if map.get("last_clicked"):
     st.session_state.df = pd.concat([st.session_state.df, df_new], ignore_index=True)
 
 if data is not None:
-    st.write(st.session_state.df.drop_duplicates()) # Writes to the app
+    with col1:
+        st.write(st.session_state.df.drop_duplicates()) # Writes to the app
     print(tg, la, lo, sep = ',') # Writes to terminal
-
-    # Save to CSV
-    with open("data.csv", "a", newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=["type", "lat", "lng"])
-        if f.tell() == 0:  # Tarkistaa, onko tiedosto tyhjä, ja lisää otsikot
-            writer.writeheader()
-        writer.writerow({"type": tg, "lat": la, "lng": lo})
-
